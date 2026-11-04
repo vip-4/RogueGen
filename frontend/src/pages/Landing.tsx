@@ -233,6 +233,26 @@ export function Landing() {
       <footer className="relative z-10 text-center py-4 font-mono text-xs text-gray-700 border-t border-gray-800/30">
         Powered by LangGraph · Phaser.js 3 · Doubao · Gemini · FastAPI
       </footer>
+    <section className="relative z-10 max-w-5xl mx-auto px-6 py-12">
+      <h2 className="font-mono text-lg text-cyan-300 mb-4">Game Showcase</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <a href="/casino" className="block p-4 rounded border border-gray-700 hover:border-cyan-500 transition-all">
+          <div className="text-2xl mb-2">Slot</div>
+          <div className="font-mono text-sm text-gray-200">Lightweight Casino</div>
+          <div className="text-xs text-gray-500 mt-1">PixiJS slot demo</div>
+        </a>
+        <a href="/workspace" className="block p-4 rounded border border-gray-700 hover:border-cyan-500 transition-all">
+          <div className="text-2xl mb-2">Roguelike</div>
+          <div className="font-mono text-sm text-gray-200">RogueGen Generator</div>
+          <div className="text-xs text-gray-500 mt-1">AI game generation</div>
+        </a>
+        <a href="/workshop" className="block p-4 rounded border border-gray-700 hover:border-cyan-500 transition-all">
+          <div className="text-2xl mb-2">Art</div>
+          <div className="font-mono text-sm text-gray-200">Asset Workshop</div>
+          <div className="text-xs text-gray-500 mt-1">AI art generation</div>
+        </a>
+      </div>
+    </section>
     </div>
   )
 }

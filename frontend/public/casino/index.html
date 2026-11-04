@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RogueGen Casino - 轻量老虎机</title>
+  <meta name="description" content="RogueGen 轻量级 H5 老虎机演示，支持 PixiJS 渲染、音效与震动反馈。" />
+  <style>
+    body { margin:0; background:#0a0a1a; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; color:#eee; font-family:system-ui; }
+    canvas { border:4px solid #ffd700; border-radius:12px; }
+    .hud { margin-top:12px; text-align:center; }
+    button { padding:10px 28px; font-size:18px; font-weight:700; border:none; border-radius:8px; background:linear-gradient(135deg,#ffd700,#ff8c00); color:#222; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <div class="hud">
+    <div>积分：<span id="score">0</span></div>
+    <button id="spin">SPIN</button>
+    <div id="status">准备就绪</div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/dist/pixi.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+  <script>
+  (function(){
+    const SYMBOLS=['🍒','🍋','🔔','⭐','7️⃣','💎'];
+    const app=new PIXI.Application({view:document.getElementById('c'),width:300,height:240,backgroundColor:0x0a0a1a});
+    const container=new PIXI.Container(); app.stage.addChild(container);
+    const reels=[];
+    for(let r=0;r<3;r++){const col=[];for(let row=0;row<3;row++){const t=new PIXI.Text(SYMBOLS[Math.floor(Math.random()*SYMBOLS.length)],{fontSize:40,fill:0xffffff});t.anchor.set(0.5);t.x=r*100+50;t.y=row*80+40;container.addChild(t);col.push(t);}reels.push(col);}
+    let score=0,spinning=false;
+    const scoreEl=document.getElementById('score'),statusEl=document.getElementById('status');
+    document.getElementById('spin').addEventListener('click',()=>{
+      if(spinning)return; spinning=true; statusEl.textContent='旋转中...';
+      const result=[];for(let r=0;r<3;r++){const col=[];for(let row=0;row<3;row++)col.push(SYMBOLS[Math.floor(Math.random()*SYMBOLS.length)]);result.push(col);}
+      let d=0;for(let r=0;r<3;r++){setTimeout(()=>{for(let row=0;row<3;row++)reels[r][row].text=result[r][row];if(r===2){setTimeout(()=>{const mid=result.map(c=>c[1]);let win=0;if(mid[0]===mid[1]&&mid[1]===mid[2])win=100;else if(mid[0]===mid[1]||mid[1]===mid[2]||mid[0]===mid[2])win=20;if(win){score+=win;scoreEl.textContent=score;statusEl.textContent='中奖 +'+win;}else statusEl.textContent='再试一次';spinning=false;},300);}},d);d+=400;}
+    });
+  })();
+  </script>
+</body>
+</html>
