@@ -1,0 +1,4 @@
+# Cloudflare Pages: proxy API and static assets to Cloud Run backend
+/api/*    https://roguegen-backend-REPLACE.a.run.app/api/:splat    200
+/static/* https://roguegen-backend-REPLACE.a.run.app/static/:splat 200
+/*        /index.html   200

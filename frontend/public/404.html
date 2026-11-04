@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>RogueGen</title>
+  <script>
+    // GitHub Pages SPA fallback: redirect unknown paths to index.html
+    (function () {
+      var path = window.location.pathname;
+      if (path !== '/' && !path.endsWith('.html')) {
+        // preserve the path for client-side router via query param
+        window.location.replace('/RogueGen/?p=' + encodeURIComponent(path));
+      } else {
+        window.location.replace('/RogueGen/');
+      }
+    })();
+  </script>
+</head>
+<body></body>
+</html>
