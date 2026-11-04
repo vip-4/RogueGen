@@ -2,6 +2,8 @@ name: Deploy to Cloudflare Pages
 
 on:
   push:
+    branches: ['*']
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
@@ -25,7 +27,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy frontend/dist --project-name=roguegen-frontend
+          command: pages deploy frontend/dist --project-name=roguegen-frontend --branch=${{ github.ref_name }}
       - name: Add custom domain (optional)
         if: ${{ secrets.CLOUDFLARE_CUSTOM_DOMAIN != '' }}
         run: |

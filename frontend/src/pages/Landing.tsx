@@ -41,7 +41,8 @@ export function Landing() {
     setErrorMsg('')
     try {
       // 先创建 session，立即拿到 session_id
-      const res = await fetch('/api/sessions', {
+      const apiBase = import.meta.env.VITE_API_BASE || ''
+      const res = await fetch(`${apiBase}/api/sessions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_requirement: req }),
