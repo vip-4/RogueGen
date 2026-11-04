@@ -26,13 +26,17 @@ export function Landing() {
   const navigate = useNavigate()
   const { setPipelineStep } = useGameStore()
   const [input, setInput] = useState('')
+  const [gameType, setGameType] = useState<'roguelike' | 'slot'>('roguelike')
   const [focused, setFocused] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
 
   const handleStart = async () => {
-    const req = input.trim()
+    let req = input.trim()
     if (!req || loading) return
+    if (gameType === 'slot' && !/老虎机|slot/i.test(req)) {
+      req = req + '（老虎机游戏）'
+    }
     setLoading(true)
     setErrorMsg('')
     try {
@@ -127,6 +131,10 @@ export function Landing() {
                 : 'border-gray-700'
             } bg-gray-900/80 backdrop-blur-sm`}
           >
+            <div className="flex gap-2 mb-3">
+              <button type="button" onClick={() => setGameType('roguelike')} className={`px-3 py-1.5 rounded text-xs font-mono border ${gameType==='roguelike' ? 'border-cyan-500 text-cyan-300 bg-cyan-950/30' : 'border-gray-700 text-gray-400'}`}>🎮 Roguelike</button>
+              <button type="button" onClick={() => setGameType('slot')} className={`px-3 py-1.5 rounded text-xs font-mono border ${gameType==='slot' ? 'border-cyan-500 text-cyan-300 bg-cyan-950/30' : 'border-gray-700 text-gray-400'}`}>🎰 老虎机</button>
+            </div>
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
