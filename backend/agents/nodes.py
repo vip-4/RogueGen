@@ -72,6 +72,8 @@ def requirement_analyst_node(state: GameDesignState) -> dict:
         raise
     elapsed = time.time() - t0
     structured = _extract_json(response.content)
+    if "老虎机" in user_req or "slot" in user_req.lower():
+        structured["game_type"] = "slot"
     logger.info("✓ 需求分析完成（%.1fs），提取字段：%s", elapsed, list(structured.keys()))
     return {
         "structured_req": structured,

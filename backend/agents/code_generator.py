@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import logging
 import re
+from pathlib import Path
 from typing import AsyncGenerator
 
 from langchain_openai import ChatOpenAI
@@ -743,6 +744,27 @@ async def generate_game_code_stream(
     """
     分三步生成游戏代码（data.js + effects.js + scenes.js），yield SSE 事件。
     """
+    structured_req = state.get("structured_req") or {}
+    user_req = state.get("user_requirement", "") or ""
+    is_slot = (
+        structured_req.get("game_type") == "slot"
+        or "老虎机" in user_req
+        or "slot" in user_req.lower()
+    )
+
+    if is_slot:
+        template_path = Path(__file__).parent.parent / "templates" / "slot_game.html"
+        try:
+            html = template_path.read_text(encoding="utf-8")
+        except Exception as exc:
+            logger.warning("读取老虎机模板失败：%s", exc)
+            html = "<h1>Slot template missing</h1>"
+        game_title = structured_req.get("title") or structured_req.get("theme") or "Slot Game"
+        html = html.replace("{game_title}", game_title)
+        yield {"type": "progress", "message": "[1/1] 生成老虎机原型（模板）..."}
+        yield {"type": "done", "game_code": html, "files": {}}
+        return
+
     sec_gameplay  = (state.get("sec_gameplay")  or "").strip()
     sec_worldview = (state.get("sec_worldview") or "").strip()
 
